@@ -8,23 +8,32 @@ contributors:
 
 ## cache
 
-`boolean` `object`
+* value
+  * `boolean`
+    * if `true` == `{ type: 'memory' }`
+    * by default,
+      * `true` | [`development` mode](/configuration/mode/#mode-development)
+      * `false` | [`production` mode](/configuration/mode/#mode-production)
+  * `object`
+* cache the generated
+  * webpack modules &
+  * chunks
+* allows
+  * improving build speed
+* _Example:_
 
-Cache the generated webpack modules and chunks to improve build speed. `cache` is set to `type: 'memory'` in [`development` mode](/configuration/mode/#mode-development) and disabled in [`production` mode](/configuration/mode/#mode-production). `cache: true` is an alias to `cache: { type: 'memory' }`. To disable caching pass `false`:
+  **webpack.config.js**
 
-**webpack.config.js**
-
-```javascript
-module.exports = {
-  //...
-  cache: false,
-};
-```
-
-While setting `cache.type` to `'filesystem'` opens up more options for configuration.
+  ```javascript
+  module.exports = {
+    //...
+    cache: false,
+  };
+  ```
 
 ### cache.allowCollectingMemory
 
+* TODO:
 Collect unused memory allocated during deserialization, only available when [`cache.type`](#cachetype) is set to `'filesystem'`. This requires copying data into smaller buffers and has a performance cost.
 
 - Type: `boolean`
@@ -419,20 +428,21 @@ module.exports = {
 
 ### cache.type
 
-`string: 'memory' | 'filesystem'`
+* `string: 'memory' | 'filesystem'`
+  * if `memory` -> NOT allow additional configuration
 
-Sets the `cache` type to either in memory or on the file system. The `memory` option is straightforward, it tells webpack to store cache in memory and doesn't allow additional configuration:
+  **webpack.config.js**
 
-**webpack.config.js**
+  ```javascript
+  module.exports = {
+    //...
+    cache: {
+      type: 'memory',
+    },
+  };
+  ```
 
-```javascript
-module.exports = {
-  //...
-  cache: {
-    type: 'memory',
-  },
-};
-```
+  * 👁️if `filesystem` -> allow additional configuration 👁️
 
 ### cache.version
 
