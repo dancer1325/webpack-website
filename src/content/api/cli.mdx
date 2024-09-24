@@ -30,17 +30,23 @@ related:
     url: https://medium.com/@nimgrg/analysing-and-minimising-the-size-of-client-side-bundle-with-webpack-and-source-map-explorer-41096559beca#.c3t2srr8x
 ---
 
-For proper usage and easier distribution of this configuration, webpack can be configured with `webpack.config.js`. Any parameters sent to the CLI will map to a corresponding parameter in the configuration file.
-
-Read the [installation guide](/guides/installation) if you don't already have webpack and CLI installed.
-
-W> `webpack-cli` v5.0.0+ requires node >= v14.15.0, `webpack >= v5.0.0`, and `webpack-dev-server >= v4.0.0`.
-
-W> If you want to run webpack using `npx` please make sure you have `webpack-cli` installed.
+* `webpack.config.js`
+  * allows
+    * proper usage
+    * easier distribution of this configuration
+  * 👁️any parameters / sent to the CLI -- will map to a -- corresponding configuration file's parameter 👁️
+* `webpack-cli` v5.0.0+
+  * requirements
+    * node >= v14.15.0,
+    * `webpack >= v5.0.0`,
+    * `webpack-dev-server >= v4.0.0`
+  * once you install it -> you can run it -- via -- `npx`
 
 ## Commands
 
-webpack-cli offers a variety of commands to make working with webpack easier. By default webpack ships with
+* allows
+  * working with webpack easier
+* built-in commands
 
 | Command                     | Usage                                                 | Description                                                                     |
 | --------------------------- | ----------------------------------------------------- | ------------------------------------------------------------------------------- |
@@ -57,31 +63,34 @@ webpack-cli offers a variety of commands to make working with webpack easier. By
 
 ### Build
 
-Run webpack (default command, can be omitted).
+* Run webpack
 
-```bash
-npx webpack build [options]
-```
+  ```bash
+  npx webpack build [options]
+  ```
 
-**example**
+* _Example:_
 
-```bash
-npx webpack build --config ./webpack.config.js --stats verbose
-```
+  ```bash
+  npx webpack build --config ./webpack.config.js --stats verbose
+
+  # ==    default command   --> can be omitted
+  npx webpack --config ./webpack.config.js --stats verbose
+  ```
 
 ### Init
 
-Used to initialize a new webpack project.
+* initialize a new webpack project
 
-```bash
-npx webpack init [generation-path] [options]
-```
+  ```bash
+  npx webpack init [generation-path] [options]
+  ```
 
-**example**
+* _Example:_
 
-```bash
-npx webpack init ./my-app --force --template=default
-```
+  ```bash
+  npx webpack init ./my-app --force --template=default
+  ```
 
 #### Generation Path
 
