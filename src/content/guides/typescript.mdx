@@ -127,57 +127,57 @@ Note that if you're already using [`babel-loader`](https://github.com/babel/babe
 
 ## Source Maps
 
-To learn more about source maps, see the [development guide](/guides/development).
+* check [development guide](/guides/development)
+* if you want to enable ->
+  * configure TypeScript / output inline source maps | compiled JavaScript files
 
-To enable source maps, we must configure TypeScript to output inline source maps to our compiled JavaScript files. The following line must be added to our TypeScript configuration:
+  **tsconfig.json**
 
-**tsconfig.json**
-
-```diff
-  {
-    "compilerOptions": {
-      "outDir": "./dist/",
-+     "sourceMap": true,
-      "noImplicitAny": true,
-      "module": "commonjs",
-      "target": "es5",
-      "jsx": "react",
-      "allowJs": true,
-      "moduleResolution": "node",
+  ```diff
+    {
+      "compilerOptions": {
+        "outDir": "./dist/",
+  +     "sourceMap": true,
+        "noImplicitAny": true,
+        "module": "commonjs",
+        "target": "es5",
+        "jsx": "react",
+        "allowJs": true,
+        "moduleResolution": "node",
+      }
     }
-  }
-```
+  ```
 
-Now we need to tell webpack to extract these source maps and include in our final bundle:
+  * configure webpack / extract these source maps & include | final bundle
 
-**webpack.config.js**
+  **webpack.config.js**
 
-```diff
-  const path = require('path');
+  ```diff
+    const path = require('path');
 
-  module.exports = {
-    entry: './src/index.ts',
-+   devtool: 'inline-source-map',
-    module: {
-      rules: [
-        {
-          test: /\.tsx?$/,
-          use: 'ts-loader',
-          exclude: /node_modules/,
-        },
-      ],
-    },
-    resolve: {
-      extensions: [ '.tsx', '.ts', '.js' ],
-    },
-    output: {
-      filename: 'bundle.js',
-      path: path.resolve(__dirname, 'dist'),
-    },
-  };
-```
+    module.exports = {
+      entry: './src/index.ts',
+  +   devtool: 'inline-source-map',
+      module: {
+        rules: [
+          {
+            test: /\.tsx?$/,
+            use: 'ts-loader',
+            exclude: /node_modules/,
+          },
+        ],
+      },
+      resolve: {
+        extensions: [ '.tsx', '.ts', '.js' ],
+      },
+      output: {
+        filename: 'bundle.js',
+        path: path.resolve(__dirname, 'dist'),
+      },
+    };
+  ```
 
-See the [devtool documentation](/configuration/devtool/) for more information.
+* check [devtool documentation](/configuration/devtool/)
 
 ## Client types
 
