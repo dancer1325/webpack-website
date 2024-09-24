@@ -17,119 +17,112 @@ contributors:
   - snitin315
 ---
 
-Webpack accepts configuration files written in multiple programming and data languages. The list of supported file extensions can be found in the [node-interpret](https://github.com/gulpjs/interpret) package. Using [node-interpret](https://github.com/gulpjs/interpret), webpack can handle many different types of configuration files.
+* Webpack accepts configuration files / written | multiple programming & data languages
+  * list of supported file extensions -- check [node-interpret](https://github.com/gulpjs/interpret) package
+    * Reason: 🧠 webpack can handle -- via [node-interpret](https://github.com/gulpjs/interpret) -- many different types of configuration files 🧠
 
 ## TypeScript
 
-To write the webpack configuration in [TypeScript](http://www.typescriptlang.org/), you would first install the necessary dependencies, i.e., TypeScript and the relevant type definitions from the [DefinitelyTyped](https://definitelytyped.org/) project:
+* steps
+  * install TypeScript + relevant type definitions -- from the -- [DefinitelyTyped](https://definitelytyped.org/) project
 
-```bash
-npm install --save-dev typescript ts-node @types/node @types/webpack
-# and, if using webpack-dev-server < v4.7.0
-npm install --save-dev @types/webpack-dev-server
-```
+  ```bash
+  npm install --save-dev typescript ts-node @types/node @types/webpack
+  # and, if using webpack-dev-server < v4.7.0
+  npm install --save-dev @types/webpack-dev-server
+  ```
 
-and then proceed to write your configuration:
+  * write your configuration | typescript
 
-**webpack.config.ts**
+  **webpack.config.ts**
 
-```typescript
-import path from 'path';
-import webpack from 'webpack';
-// in case you run into any typescript error when configuring `devServer`
-import 'webpack-dev-server';
+  ```typescript
+  import path from 'path';
+  import webpack from 'webpack';
+  // in case you run into any typescript error when configuring `devServer`
+  import 'webpack-dev-server';
 
-const config: webpack.Configuration = {
-  mode: 'production',
-  entry: './foo.js',
-  output: {
-    path: path.resolve(__dirname, 'dist'),
-    filename: 'foo.bundle.js',
-  },
-};
+  const config: webpack.Configuration = {
+    mode: 'production',
+    entry: './foo.js',
+    output: {
+      path: path.resolve(__dirname, 'dist'),
+      filename: 'foo.bundle.js',
+    },
+  };
 
-export default config;
-```
+  export default config;
+  ```
 
-**tsconfig.json**
+  **tsconfig.json**
 
-```json
-{
-  "compilerOptions": {
-    "allowSyntheticDefaultImports": true,
-    "esModuleInterop": true
-  }
-}
-```
-
-The above sample assumes version >= 2.7 or newer of TypeScript is used with the new `esModuleInterop` and `allowSyntheticDefaultImports` compiler options in your `tsconfig.json` file.
-
-Note that you'll also need to check your `tsconfig.json` file. If the `module` in `compilerOptions` in `tsconfig.json` is `commonjs`, the setting is complete, else webpack will fail with an error. This occurs because `ts-node` does not support any module syntax other than `commonjs`.
-
-There are three solutions to this issue:
-
-- Modify `tsconfig.json`.
-- Modify `tsconfig.json` and add settings for `ts-node`.
-- Install `tsconfig-paths`.
-
-
-The **first option** is to open your `tsconfig.json` file and look for `compilerOptions`. Set `target` to `"ES5"` and `module` to `"CommonJS"` (or completely remove the `module` option).
-
-The **second option** is to add settings for ts-node:
-
-You can keep `"module": "ESNext"` for `tsc`, and if you use webpack, or another build tool, set an override for ts-node. [ts-node config](https://typestrong.org/ts-node/docs/imports/)
-
-```json
-{
-  "compilerOptions": {
-    "module": "ESNext",
-  },
-  "ts-node": {
+  ```json
+  {
     "compilerOptions": {
-      "module": "CommonJS"
+      // TS v2.7+       , because next compilerOptions are used
+      "allowSyntheticDefaultImports": true,
+      "esModuleInterop": true
     }
   }
-}
-```
+  ```
 
-The **third option** is to install the `tsconfig-paths` package:
+* ⚠️`ts-node`
+  * ONLY supports module syntax `commonjs` ⚠️ ->
+    * else, you get an error
+    * ways to set up
+      * `compilerOptions.target="ES5"` & `compilerOptions.module="CommonJS"` | `tsconfig.json`
+      * `tsconfig.json.ts-node`
+        * check [ts-node config](https://typestrong.org/ts-node/docs/imports/)
 
-```bash
-npm install --save-dev tsconfig-paths
-```
+    ```json
+    {
+      "compilerOptions": {    //
+        "module": "ESNext",
+      },
+      "ts-node": {        // used by webpack OR another build tool
+        "compilerOptions": {
+          "module": "CommonJS"
+        }
+      }
+    }
+    ```
+      * install `tsconfig-paths` & separate TypeScript configuration for your webpack configs
 
-And create a separate TypeScript configuration specifically for your webpack configs:
+    ```bash
+    npm install --save-dev tsconfig-paths
+    ```
 
-**tsconfig-for-webpack-config.json**
+  **tsconfig-for-webpack-config.json**
 
-```json
-{
-  "compilerOptions": {
-    "module": "commonjs",
-    "target": "es5",
-    "esModuleInterop": true
+  ```json
+  {
+    "compilerOptions": {
+      "module": "commonjs",
+      "target": "es5",
+      "esModuleInterop": true
+    }
   }
-}
-```
+  ```
 
-T> `ts-node` can resolve a `tsconfig.json` file using the environment variable provided by `tsconfig-paths`.
+  * can resolve a `tsconfig.json` -- via the -- environment variable provided by `tsconfig-paths`
+    * -> set the environment variable `process.env.TS_NODE_PROJECT` / -- provided by -- `tsconfig-paths`
+      * `TS_NODE_PROJECT` might NOT work
+        * [issue](https://github.com/webpack/webpack.js.org/issues/2733)
+        * -> run it with `cross-env`
 
-Then set the environment variable `process.env.TS_NODE_PROJECT` provided by `tsconfig-paths` like so:
+  **package.json**
 
-**package.json**
-
-```json
-{
-  "scripts": {
-    "build": "cross-env TS_NODE_PROJECT=\"tsconfig-for-webpack-config.json\" webpack"
+  ```json
+  {
+    "scripts": {
+      "build": "cross-env TS_NODE_PROJECT=\"tsconfig-for-webpack-config.json\" webpack"
+    }
   }
-}
-```
-
-W> We had been getting reports that `TS_NODE_PROJECT` might not work with `"TS_NODE_PROJECT" unrecognized command` error. Therefore running it with `cross-env` seems to fix the issue, for more info [see this issue](https://github.com/webpack/webpack.js.org/issues/2733).
+  ```
 
 ## CoffeeScript
 
+* TODO:
 Similarly, to use [CoffeeScript](https://coffeescript.org/), you would first install the necessary dependencies:
 
 ```bash
