@@ -25,47 +25,53 @@ contributors:
   - malcolm-kee
 ---
 
-[webpack-dev-server](https://github.com/webpack/webpack-dev-server) can be used to quickly develop an application. See the [development guide](/guides/development/) to get started.
-
-This page describes the options that affect the behavior of webpack-dev-server (short: dev-server) <Badge text="version >= 5.0.0" />. Migration guide from `v4` to `v5` can be found [here](https://github.com/webpack/webpack-dev-server/blob/master/migration-v5.md).
-
-W> `webpack-dev-server v5.0.0+` requires `node >= v18.12.0`, `webpack >= v5.0.0` and `webpack-cli >= v4.7.0`, we recommend using the latest version.
+* [webpack-dev-server](https://github.com/webpack/webpack-dev-server)
+  * uses
+    * quickly develop an application
+  * check [development guide](/guides/development/)
+  * migration guide from `v4` to `v5` -- check [here](https://github.com/webpack/webpack-dev-server/blob/master/migration-v5.md) --
+  * requirements
+    * if `webpack-dev-server v5.0.0+` -> requires
+      * `node >= v18.12.0`,
+      * `webpack >= v5.0.0`
+      * `webpack-cli >= v4.7.0`
 
 ## devServer
 
-`object`
+* `object` /
+  * options -- is picked up by -- [webpack-dev-server](https://github.com/webpack/webpack-dev-server)
+  * uses
+    * change its behavior
+* _Example:_ gzips and serves everything from our `public/` | project root
 
-This set of options is picked up by [webpack-dev-server](https://github.com/webpack/webpack-dev-server) and can be used to change its behavior in various ways. Here's a rudimentary example that gzips and serves everything from our `public/` directory in the project root:
+  **webpack.config.js**
 
-**webpack.config.js**
+  ```javascript
+  const path = require('path');
 
-```javascript
-const path = require('path');
-
-module.exports = {
-  //...
-  devServer: {
-    static: {
-      directory: path.join(__dirname, 'public'),
+  module.exports = {
+    //...
+    devServer: {
+      static: {
+        directory: path.join(__dirname, 'public'),
+      },
+      compress: true,
+      port: 9000,
     },
-    compress: true,
-    port: 9000,
-  },
-};
-```
+  };
+  ```
 
-When the server is started, there will be a message prior to the list of resolved modules:
+  * once server is started -> message / prior to the list of resolved modules
 
-```bash
-<i> [webpack-dev-server] Project is running at:
-<i> [webpack-dev-server] Loopback: http://localhost:9000/
-<i> [webpack-dev-server] On Your Network (IPv4): http://197.158.164.104:9000/
-<i> [webpack-dev-server] On Your Network (IPv6): http://[fe80::1]:9000/
-<i> [webpack-dev-server] Content not from webpack is served from '/path/to/public' directory
-```
+  ```bash
+  <i> [webpack-dev-server] Project is running at:
+  <i> [webpack-dev-server] Loopback: http://localhost:9000/
+  <i> [webpack-dev-server] On Your Network (IPv4): http://197.158.164.104:9000/
+  <i> [webpack-dev-server] On Your Network (IPv6): http://[fe80::1]:9000/
+  <i> [webpack-dev-server] Content not from webpack is served from '/path/to/public' directory
+  ```
 
-that will give some background on where the server is located and what it's serving.
-
+* TODO:
 If you're using dev-server through the Node.js API, the options in `devServer` will be ignored. Pass the options as the first parameter instead: `new WebpackDevServer({...}, compiler)`. [See here](https://github.com/webpack/webpack-dev-server/tree/master/examples/api/simple) for an example of how to use webpack-dev-server through the Node.js API.
 
 W> You cannot use the second `compiler` argument (a callback) when using `WebpackDevServer`.
