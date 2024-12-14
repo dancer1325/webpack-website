@@ -1,4 +1,7 @@
-**[Without config](https://youtu.be/3Nv9muOkb6k?t=21293)** or provide custom **webpack.config.js**
+* configuration
+  * **[WITHOUT](https://youtu.be/3Nv9muOkb6k?t=21293)**
+    * TODO:
+  * provide custom **webpack.config.js**
 
 ```js
 const path = require('path');
