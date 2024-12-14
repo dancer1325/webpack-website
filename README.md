@@ -22,38 +22,15 @@ Guides, documentation, and all things webpack.
   * [Concepts - Review and Organize][concepts-url]
   * [General - Updates & Fixes][general-url]
 
-## Translation
-
-To help translate this documentation please jump to the [translation branch][translate-url].
-
 ## Versioning
 
-Since webpack 4 we have created a subdomain-based archive for older states of documentation
-matching older webpack version. Webpack 4's documentation is available at
-[https://v4.webpack.js.org/](https://v4.webpack.js.org/) and is deployed from [`gh-pages` branch of v4.webpack.js.org repository](https://github.com/webpack/v4.webpack.js.org/tree/gh-pages)
+* webpack v4+
+  * subdomain-based archive -- for -- older states of documentation / match older webpack version
+  * 's documentation
+    * available |[https://v4.webpack.js.org/](https://v4.webpack.js.org/)
+    * deployed | [`gh-pages` branch of v4.webpack.js.org repository](https://github.com/webpack/v4.webpack.js.org/tree/gh-pages)
 
-There are various known issues that need fixing ([#3366](https://github.com/webpack/webpack.js.org/issues/3366)).
-
-## Contributing
-
-Read through the [writer's guide][writer-guide-url] if you're interested in editing the
-content on this site. See the [contributors page][contributing-url] to learn how to set up and
-start working on the site locally.
-
-## License
-
-The content is available under the [Creative Commons BY 4.0][license-url] license.
-
-## Special Thanks
-
-_BrowserStack_ has graciously allowed us to do cross-browser and cross-os
-testing of the site at no cost...
-
-[![BrowserStackLogo][browserstack]][browserstack-url]
-
-_Vercel_ has given us a Pro account.
-
-[![VercelLogo][vercel]][vercel-url]
+* [known issues](https://github.com/webpack/webpack.js.org/issues/3366)
 
 [build-status]: https://github.com/webpack/webpack.js.org/workflows/Deploy/badge.svg
 [build-status-url]: https://github.com/webpack/webpack.js.org/actions
