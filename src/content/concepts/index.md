@@ -22,12 +22,20 @@ contributors:
   - RyanGreyling2
 ---
 
-At its core, **webpack** is a _static module bundler_ for modern JavaScript applications. When webpack processes your application, it internally builds a [dependency graph](/concepts/dependency-graph/) from one or more _entry points_ and then combines every module your project needs into one or more _bundles_, which are static assets to serve your content from.
+* **webpack**
+  * == _static module bundler_ -- for -- modern JavaScript applications
+  * how does it work?
+    * builds a [dependency graph](/concepts/dependency-graph/) -- from -- >=1 _entry points_
+    * every module / needed by your project -- is combined into -- >=1 _bundles_
+  * configuration file
+    * 👁️NOT required, from webpack v4.0.0+ 👁️
+    * [incredibly configurable](/configuration)
+* **bundles**
+  * == static assets / serve your content from
+* JavaScript modules & webpack modules
+  * [check here](/concepts/modules)
 
-T> Learn more about JavaScript modules and webpack modules [here](/concepts/modules).
-
-Since version 4.0.0, **webpack does not require a configuration file** to bundle your project. Nevertheless, it is [incredibly configurable](/configuration) to better fit your needs.
-
+* TODO:
 To get started you only need to understand its **Core Concepts**:
 
 - [Entry](#entry)

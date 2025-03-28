@@ -29,195 +29,180 @@ contributors:
   - Etheryen
 ---
 
-* allows
-  * compiling JavaScript modules
-* check [installation](/guides/installation)
-* ways to interact with webpack
-  * [CLI](/api/cli) or
-  * [API](/api/node)
-* check
-  * [core concepts](/concepts)
-  * [vs other tools](/comparison)
+Webpack is used to compile JavaScript modules. Once [installed](/guides/installation), you can interact with webpack either from its [CLI](/api/cli) or [API](/api/node). If you're still new to webpack, please read through the [core concepts](/concepts) and [this comparison](/comparison) to learn why you might use it over the other tools that are out in the community.
 
+W> The minimum supported Node.js version to run webpack 5 is 10.13.0 (LTS)
 
 <StackBlitzPreview example="getting-started?terminal=" />
 
 ## Basic Setup
 
-* project created is | "examples"
-* steps
+First let's create a directory, initialize npm, [install webpack locally](/guides/installation/#local-installation), and install the [`webpack-cli`](https://github.com/webpack/webpack-cli) (the tool used to run webpack on the command line):
 
-  ```bash
-  # 1. create a directory
-  mkdir webpack-demo
-  cd webpack-demo
-  # 2. initialize npm
-  npm init -y
-  # 3. install webpack & webpack-cli locally
-  npm install webpack webpack-cli --save-dev
-  ```
+```bash
+mkdir webpack-demo
+cd webpack-demo
+npm init -y
+npm install webpack webpack-cli --save-dev
+```
 
-* **`diff`** blocks -- to show -- changes / made to directories, files, and code
-  * _Example:_ For instance
+Throughout the Guides we will use **`diff`** blocks to show you what changes we're making to directories, files, and code. For instance:
 
-  ```diff
-  + this is a new line you shall copy into your code
-  - and this is a line to be removed from your code
-    and this is a line not to touch.
-  ```
+```diff
++ this is a new line you shall copy into your code
+- and this is a line to be removed from your code
+  and this is a line not to touch.
+```
 
-* create the following directory structure, files and their contents
+Now we'll create the following directory structure, files and their contents:
 
-  ```diff
-    webpack-demo
-    |- package.json
-    |- package-lock.json
-  + |- index.html
-  + |- /src
-  +   |- index.js
-  ```
+**project**
 
-  ```javascript, title=src/index.js
-  function component() {
-    const element = document.createElement('div');
+```diff
+  webpack-demo
+  |- package.json
+  |- package-lock.json
++ |- index.html
++ |- /src
++   |- index.js
+```
 
-    // Lodash, currently included via a script, is required for this line to work
-    element.innerHTML = _.join(['Hello', 'webpack'], ' ');
+**src/index.js**
 
-    return element;
-  }
+```javascript
+function component() {
+  const element = document.createElement('div');
 
-  document.body.appendChild(component());
-  ```
+  // Lodash, currently included via a script, is required for this line to work
+  element.innerHTML = _.join(['Hello', 'webpack'], ' ');
 
-  ```html, title=index.html
-  <!DOCTYPE html>
-  <html>
-    <head>
-      <meta charset="utf-8" />
-      <title>Getting Started</title>
-      <script src="https://unpkg.com/lodash@4.17.20"></script>
-    </head>
-    <body>
-      <script src="./src/index.js"></script>
-    </body>
-  </html>
-  ```
+  return element;
+}
 
-  * make our `package.json`
-    * `private`  -> NO publish it
-    * remove the `main` entry
+document.body.appendChild(component());
+```
 
-  ```diff
-   {
-     "name": "webpack-demo",
-     "version": "1.0.0",
-     "description": "",
-  -  "main": "index.js",
-  +  "private": true,
-     "scripts": {
-       "test": "echo \"Error: no test specified\" && exit 1"
-     },
-     "keywords": [],
-     "author": "",
-     "license": "MIT",
-     "devDependencies": {
-       "webpack": "^5.38.1",
-       "webpack-cli": "^4.7.2"
-     }
+**index.html**
+
+```html
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Getting Started</title>
+    <script src="https://unpkg.com/lodash@4.17.20"></script>
+  </head>
+  <body>
+    <script src="./src/index.js"></script>
+  </body>
+</html>
+```
+
+We also need to adjust our `package.json` file in order to make sure we mark our package as `private`, as well as removing the `main` entry. This is to prevent an accidental publish of your code.
+
+T> If you want to learn more about the inner workings of `package.json`, then we recommend reading the [npm documentation](https://docs.npmjs.com/files/package.json).
+
+**package.json**
+
+```diff
+ {
+   "name": "webpack-demo",
+   "version": "1.0.0",
+   "description": "",
+-  "main": "index.js",
++  "private": true,
+   "scripts": {
+     "test": "echo \"Error: no test specified\" && exit 1"
+   },
+   "keywords": [],
+   "author": "",
+   "license": "MIT",
+   "devDependencies": {
+     "webpack": "^5.38.1",
+     "webpack-cli": "^4.7.2"
    }
-  ```
+ }
+```
 
-* ways to manage scripts
-  * executing one before the other
-    * problems
-      * NOT immediately apparent that the script -- depends on an -- external library
-      * if a dependency is missing, OR included in the wrong order -> the application will NOT function properly
-      * if a dependency is included, BUT NOT used -> browser will be forced to download unnecessary code
-  * webpack manage the scripts
+In this example, there are implicit dependencies between the `<script>` tags. Our `index.js` file depends on `lodash` being included in the page before it runs. This is because `index.js` never explicitly declared a need for `lodash`; it assumes that the global variable `_` exists.
+
+There are problems with managing JavaScript projects this way:
+
+- It is not immediately apparent that the script depends on an external library.
+- If a dependency is missing, or included in the wrong order, the application will not function properly.
+- If a dependency is included but not used, the browser will be forced to download unnecessary code.
+
+Let's use webpack to manage these scripts instead.
 
 ## Creating a Bundle
 
-* separate the "source" code (`./src`) -- from -- "distribution" code (`./dist`)
-  * "source" code == code / we'll write and edit
-  * "distribution" code == minimized & optimized `output` of our build process / loaded | browser
+First we'll tweak our directory structure slightly, separating the "source" code (`./src`) from our "distribution" code (`./dist`). The "source" code is the code that we'll write and edit. The "distribution" code is the minimized and optimized `output` of our build process that will eventually be loaded in the browser. Tweak the directory structure as follows:
 
-  **project**
+**project**
 
-  ```diff
-    webpack-demo
-    |- package.json
-    |- package-lock.json
-  + |- /dist
-  +   |- index.html
-  - |- index.html
-    |- /src
-      |- index.js
-  ```
+```diff
+  webpack-demo
+  |- package.json
+  |- package-lock.json
++ |- /dist
++   |- index.html
+- |- index.html
+  |- /src
+    |- index.js
+```
 
-  * `index.html`
-    * was created manually, EVEN THOUGH it is now placed | `dist` directory
-    * on [another guide](/guides/output-management/#setting-up-htmlwebpackplugin), we will generate `index.html` -> safe to empty the `dist` directory
+T> You may have noticed that `index.html` was created manually, even though it is now placed in the `dist` directory. Later on in [another guide](/guides/output-management/#setting-up-htmlwebpackplugin), we will generate `index.html` rather than edit it manually. Once this is done, it should be safe to empty the `dist` directory and to regenerate all the files within it.
 
-* bundling our script
+To bundle the `lodash` dependency with `index.js`, we'll need to install the library locally:
 
-  ```bash
-  npm install --save lodash
-  ```
+```bash
+npm install --save lodash
+```
 
-  * if you need to install a package / will be bundled | your production bundle -> use `npm install --save`
-  * if you need to install a package / development purposes (e.g. a linter, testing libraries, etc.) -> use `npm install --save-dev
+T> When installing a package that will be bundled into your production bundle, you should use `npm install --save`. If you're installing a package for development purposes (e.g. a linter, testing libraries, etc.) then you should use `npm install --save-dev`. More information can be found in the [npm documentation](https://docs.npmjs.com/cli/install).
 
-  * `import lodash` | our script
+Now, let's import `lodash` in our script:
 
-    **src/index.js**
+**src/index.js**
 
-    ```diff
-    +import _ from 'lodash';
-    +
-     function component() {
-       const element = document.createElement('div');
+```diff
++import _ from 'lodash';
++
+ function component() {
+   const element = document.createElement('div');
 
-    -  // Lodash, currently included via a script, is required for this line to work
-    +  // Lodash, now imported by this script
-       element.innerHTML = _.join(['Hello', 'webpack'], ' ');
+-  // Lodash, currently included via a script, is required for this line to work
++  // Lodash, now imported by this script
+   element.innerHTML = _.join(['Hello', 'webpack'], ' ');
 
-       return element;
-     }
+   return element;
+ }
 
-     document.body.appendChild(component());
-    ```
+ document.body.appendChild(component());
+```
 
-  * modify file / load the bundle
+Now, since we'll be bundling our scripts, we have to update our `index.html` file. Let's remove the lodash `<script>`, as we now `import` it, and modify the other `<script>` tag to load the bundle, instead of the raw `./src` file:
 
-    **dist/index.html**
+**dist/index.html**
 
-    ```diff
-     <!DOCTYPE html>
-     <html>
-       <head>
-         <meta charset="utf-8" />
-         <title>Getting Started</title>
-    -    <script src="https://unpkg.com/lodash@4.17.20"></script>
-       </head>
-       <body>
-    -    <script src="./src/index.js"></script>
-    +    <script src="main.js"></script>
-       </body>
-     </html>
-    ```
+```diff
+ <!DOCTYPE html>
+ <html>
+   <head>
+     <meta charset="utf-8" />
+     <title>Getting Started</title>
+-    <script src="https://unpkg.com/lodash@4.17.20"></script>
+   </head>
+   <body>
+-    <script src="./src/index.js"></script>
++    <script src="main.js"></script>
+   </body>
+ </html>
+```
 
-  * webpack
-    * builds a dependency graph
-    * generates an optimized bundle / scripts will be executed in the correct order
+In this setup, `index.js` explicitly requires `lodash` to be present, and binds it as `_` (no global scope pollution). By stating what dependencies a module needs, webpack can use this information to build a dependency graph. It then uses the graph to generate an optimized bundle where scripts will be executed in the correct order.
 
-* `npx webpack`
-  * `src/index.js` as the [entry point](/concepts/entry-points)
-  * generate `dist/main.js` as the [output](/concepts/output)
-  * `npx` command
-    * Node 8.2+ / npm 5.2.0+
-    * picks the `./node_modules/.bin/*`
-      * _Example:_ `npx webpack` runs the `./node_modules/.bin/webpack`
+With that said, let's run `npx webpack`, which will take our script at `src/index.js` as the [entry point](/concepts/entry-points), and will generate `dist/main.js` as the [output](/concepts/output). The `npx` command, which ships with Node 8.2/npm 5.2.0 or higher, runs the webpack binary (`./node_modules/.bin/webpack`) of the webpack package we installed in the beginning:
 
 ```bash
 $ npx webpack
@@ -230,11 +215,12 @@ cacheable modules 530 KiB
 webpack 5.4.0 compiled successfully in 1851 ms
 ```
 
-* Open `dist/index.html` | your browser
+T> Your output may vary a bit, but if the build is successful then you are good to go.
+
+Open `index.html` from the `dist` directory in your browser and, if everything went right, you should see the following text: `'Hello webpack'`.
 
 ## Modules
 
-* TODO:
 The [`import`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/import) and [`export`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/export) statements have been standardized in [ES2015](https://babeljs.io/docs/en/learn/). They are supported in most of the browsers at this moment, however there are some browsers that don't recognize the new syntax. But don't worry, webpack does support them out of the box.
 
 Behind the scenes, webpack actually "**transpiles**" the code so that older browsers can also run it. If you inspect `dist/main.js`, you might be able to see how webpack does this, it's quite ingenious! Besides `import` and `export`, webpack supports various other module syntaxes as well, see [Module API](/api/module-methods) for more information.

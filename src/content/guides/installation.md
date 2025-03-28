@@ -1,0 +1,85 @@
+---
+title: Installation
+sort: 13
+contributors:
+  - pksjce
+  - bebraw
+  - simon04
+  - EugeneHlushko
+  - sibiraj-s
+  - chenxsan
+---
+
+* goal
+  * methods to install webpack
+* [![GitHub release](https://img.shields.io/npm/v/webpack.svg?label=webpack&style=flat-square&maxAge=3600)](https://github.com/webpack/webpack/releases)
+
+## Prerequisites
+
+* fresh version of [Node.js](https://nodejs.org/en/)
+  * current Long Term Support (LTS) release is an ideal starting point
+  * if you use older versions -> You may run into a variety of issues
+    * Reason: 🧠 may be missing functionality webpack and/or its related packages require 🧠
+  * if you use webpack 5 -> Node.js v10.13.0+
+
+## Local Installation
+
+* if you use webpack, ONLY for bundling (NOT include | production build)-> install it with `--save-dev`
+
+  ```bash
+  npm install --save-dev webpack
+  # or specific version
+  npm install --save-dev webpack@<version>
+  ```
+
+* else -> install it via
+
+  ```bash
+  npm install webpack
+  # or specific version
+  npm install webpack@<version>
+  ```
+
+* if you're using webpack v4+ & want to call `webpack` -- from the -- CL -> install the [CLI](/api/cli/)
+
+  ```bash
+  npm install --save-dev webpack-cli
+  ```
+
+* 👁️recommend it for MOST projects 👁️
+  * Reason: 🧠 easier to upgrade projects individually 🧠
+
+* typically, it's run -- via -- >=1 [npm scripts](https://docs.npmjs.com/misc/scripts) / look for a webpack installation | your local `node_modules` directory
+  * you can access its binary version | `node_modules/.bin/webpack`
+
+  ```json
+  "scripts": {
+    "build": "webpack --config webpack.config.js"
+
+    // if you are using npm v5.2.0+ -> run `npx webpack`
+    "build": "webpack --config webpack.config.js"
+  }
+  ```
+
+
+## Global Installation
+
+```bash
+npm install --global webpack
+```
+
+* **NOT recommended**
+  * Reason: 🧠 locks you down to a specific version of webpack 🧠
+
+## Bleeding Edge
+
+* == install the latest versions / offered by webpack
+  * may still contain bugs
+
+  ```bash
+  npm install --save-dev webpack@next
+  # or a specific tag/branch
+  npm install --save-dev webpack/webpack#<tagname/branchname>
+  ```
+
+* **NOT recommended** to use | production

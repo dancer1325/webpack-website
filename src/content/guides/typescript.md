@@ -115,42 +115,6 @@ Now lets change the import of `lodash` in our `./index.ts` due to the fact that 
 
 T> To make imports do this by default and keep `import _ from 'lodash';` syntax in TypeScript, set `"allowSyntheticDefaultImports" : true` and `"esModuleInterop" : true` in your **tsconfig.json** file. This is related to TypeScript configuration and mentioned in our guide only for your information.
 
-## Ways to Use TypeScript in `webpack.config.ts`
-
-There are 5 ways to use TypeScript in `webpack.config.ts`:
-
-1. **Using webpack with TypeScript config:**
-
-```bash
-webpack -c ./webpack.config.ts
-   ```
-
-(Not all things are supported due to limitations of `rechoir` and `interpret`.)
-
-2. **Using custom `--import` for Node.js:**
-
-```bash
-NODE_OPTIONS='--import tsx'  webpack --disable-interpret -c ./webpack.config.ts
-   ```
-
-3. **Using built-in TypeScript module for Node.js v22.7.0 ≥ YOUR NODE.JS VERSION < v23.6.0:**
-
-```bash
-NODE_OPTIONS='--experimental-strip-types' webpack --disable-interpret -c ./webpack.config.ts
-   ```
-
-4. **Using built-in TypeScript module for Node.js ≥ v22.6.0:**
-
-```bash
-webpack --disable-interpret -c ./webpack.config.ts
-   ```
-
-5. **Using a tsx for Node.js ≥ v22.6.0:**
-
-```bash
-NODE_OPTIONS='--no-experimental-strip-types --import tsx' webpack --disable-interpret -c ./webpack.config.ts
-   ```
-
 ## Loader
 
 [`ts-loader`](https://github.com/TypeStrong/ts-loader)
@@ -163,57 +127,57 @@ Note that if you're already using [`babel-loader`](https://github.com/babel/babe
 
 ## Source Maps
 
-To learn more about source maps, see the [development guide](/guides/development).
+* check [development guide](/guides/development)
+* if you want to enable ->
+  * configure TypeScript / output inline source maps | compiled JavaScript files
 
-To enable source maps, we must configure TypeScript to output inline source maps to our compiled JavaScript files. The following line must be added to our TypeScript configuration:
+  **tsconfig.json**
 
-**tsconfig.json**
-
-```diff
-  {
-    "compilerOptions": {
-      "outDir": "./dist/",
-+     "sourceMap": true,
-      "noImplicitAny": true,
-      "module": "commonjs",
-      "target": "es5",
-      "jsx": "react",
-      "allowJs": true,
-      "moduleResolution": "node",
+  ```diff
+    {
+      "compilerOptions": {
+        "outDir": "./dist/",
+  +     "sourceMap": true,
+        "noImplicitAny": true,
+        "module": "commonjs",
+        "target": "es5",
+        "jsx": "react",
+        "allowJs": true,
+        "moduleResolution": "node",
+      }
     }
-  }
-```
+  ```
 
-Now we need to tell webpack to extract these source maps and include in our final bundle:
+  * configure webpack / extract these source maps & include | final bundle
 
-**webpack.config.js**
+  **webpack.config.js**
 
-```diff
-  const path = require('path');
+  ```diff
+    const path = require('path');
 
-  module.exports = {
-    entry: './src/index.ts',
-+   devtool: 'inline-source-map',
-    module: {
-      rules: [
-        {
-          test: /\.tsx?$/,
-          use: 'ts-loader',
-          exclude: /node_modules/,
-        },
-      ],
-    },
-    resolve: {
-      extensions: [ '.tsx', '.ts', '.js' ],
-    },
-    output: {
-      filename: 'bundle.js',
-      path: path.resolve(__dirname, 'dist'),
-    },
-  };
-```
+    module.exports = {
+      entry: './src/index.ts',
+  +   devtool: 'inline-source-map',
+      module: {
+        rules: [
+          {
+            test: /\.tsx?$/,
+            use: 'ts-loader',
+            exclude: /node_modules/,
+          },
+        ],
+      },
+      resolve: {
+        extensions: [ '.tsx', '.ts', '.js' ],
+      },
+      output: {
+        filename: 'bundle.js',
+        path: path.resolve(__dirname, 'dist'),
+      },
+    };
+  ```
 
-See the [devtool documentation](/configuration/devtool/) for more information.
+* check [devtool documentation](/configuration/devtool/)
 
 ## Client types
 

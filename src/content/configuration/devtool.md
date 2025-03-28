@@ -12,21 +12,22 @@ contributors:
   - snitin315
 related:
   - title: Enabling Source Maps
-url: https://survivejs.com/webpack/developing-with-webpack/enabling-sourcemaps/
+    url: https://survivejs.com/webpack/developing-with-webpack/enabling-sourcemaps/
   - title: webpack's Devtool Source Map
-url: http://cheng.logdown.com/posts/2016/03/25/679045
+    url: http://cheng.logdown.com/posts/2016/03/25/679045
 ---
 
-This option controls if and how source maps are generated.
-
-Use the [`SourceMapDevToolPlugin`](/plugins/source-map-dev-tool-plugin) for a more fine grained configuration. See the [`source-map-loader`](/loaders/source-map-loader) to deal with existing source maps.
+* option / controls if & how source maps are generated
+* if you want fine grained configuration -> use [`SourceMapDevToolPlugin`](/plugins/source-map-dev-tool-plugin)
+* check [`source-map-loader`](/loaders/source-map-loader)
 
 ## devtool
 
-`string = 'eval'` `false`
-
-Choose a style of [source mapping](http://blog.teamtreehouse.com/introduction-source-maps) to enhance the debugging process. These values can affect build and rebuild speed dramatically.
-
+* `string = 'eval'` `false`
+* style of [source mapping](http://blog.teamtreehouse.com/introduction-source-maps) ->
+  * enhance the debugging process
+  * values -- can affect -- build & rebuild speed dramatically
+* TODO:
 T> The webpack repository contains an [example showing the effect of all `devtool` variants](https://github.com/webpack/webpack/tree/master/examples/source-map). Those examples will likely help you to understand the differences.
 
 T> Instead of using the `devtool` option you can also use `SourceMapDevToolPlugin`/`EvalSourceMapDevToolPlugin` directly as it has more options. Never use both the `devtool` option and plugin together. The `devtool` option adds the plugin internally so you would end up with the plugin applied twice.
@@ -38,11 +39,11 @@ T> Instead of using the `devtool` option you can also use `SourceMapDevToolPlugi
 | `eval-cheap-source-map`                    | **build**: ok<br /><br />**rebuild**: fast         | no         | transformed    | Tradeoff choice for development builds.                                               |
 | `eval-cheap-module-source-map`             | **build**: slow<br /><br />**rebuild**: fast       | no         | original lines | Tradeoff choice for development builds.                                               |
 | **`eval-source-map`**                      | **build**: slowest<br /><br />**rebuild**: ok      | no         | original       | Recommended choice for development builds with high quality SourceMaps.               |
-| `cheap-source-map`                         | **build**: ok<br /><br />**rebuild**: slow         | no         | transformed    |                                                                                       |
-| `cheap-module-source-map`                  | **build**: slow<br /><br />**rebuild**: slow       | no         | original lines |                                                                                       |
+| `cheap-source-map`                         | **build**: ok<br /><br />**rebuild**: slow         | no         | transformed    |
+| `cheap-module-source-map`                  | **build**: slow<br /><br />**rebuild**: slow       | no         | original lines |
 | **`source-map`**                           | **build**: slowest<br /><br />**rebuild**: slowest | yes        | original       | Recommended choice for production builds with high quality SourceMaps.                |
-| `inline-cheap-source-map`                  | **build**: ok<br /><br />**rebuild**: slow         | no         | transformed    |                                                                                       |
-| `inline-cheap-module-source-map`           | **build**: slow<br /><br />**rebuild**: slow       | no         | original lines |                                                                                       |
+| `inline-cheap-source-map`                  | **build**: ok<br /><br />**rebuild**: slow         | no         | transformed    |
+| `inline-cheap-module-source-map`           | **build**: slow<br /><br />**rebuild**: slow       | no         | original lines |
 | `inline-source-map`                        | **build**: slowest<br /><br />**rebuild**: slowest | no         | original       | Possible choice when publishing a single file                                         |
 | `eval-nosources-cheap-source-map`          | **build**: ok<br /><br />**rebuild**: fast         | no         | transformed    | source code not included                                                              |
 | `eval-nosources-cheap-module-source-map`   | **build**: slow<br /><br />**rebuild**: fast       | no         | original lines | source code not included                                                              |
