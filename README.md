@@ -1,28 +1,15 @@
-<div align="center">
-  <a href="https://github.com/webpack/webpack">
-    <img width="200" height="200" src="https://webpack.js.org/assets/icon-square-big.svg" />
-  </a>
-  <h1>webpack.js.org</h1>
+* goal
+  * Guides,
+  * documentation
 
-[![Build Status][build-status]][build-status-url]
-[![Standard Version][release]][release-url]
-[![GitHub Discussions][discussion]][discussion-url]
+# Content Progress
 
-Guides, documentation, and all things webpack.
-
-</div>
-
-## Content Progress
-
-* covered much of the backlog of _missing documentation_
-* next steps
-  * review each section
-* goal specified in the issues
+* ⚠️== missing documentation / PENDING to create ⚠️
   * [Guides - Review and Simplify][guides-url]
   * [Concepts - Review and Organize][concepts-url]
   * [General - Updates & Fixes][general-url]
 
-## Versioning
+# Versioning
 
 * webpack v4+
   * subdomain-based archive -- for -- older states of documentation / match older webpack version
