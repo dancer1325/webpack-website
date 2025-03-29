@@ -855,113 +855,96 @@ module.exports = {
 
 ## output.library
 
-Output a library exposing the exports of your entry point.
+* allows
+  * 👀exposing your entry point's exports / specify as a variable👀
+    * ⚠️if the `entry` == array -> ONLY LAST one are exported ⚠️
+      * _Example:_
+        ```js
+        module.exports = {
+          // …
+          entry: ['./src/a.js', './src/b.js'], // only exports in b.js will be exposed
+          output: {
+            library: 'MyLibrary',
+          },
+        };
+        ```
+    * ⚠️if the `entry` == object -> specify `output.library` -- as -- array ⚠️
+      * _Example:_ see [this example](https://github.com/webpack/webpack/tree/main/examples/multi-part-library)
+        ```js
+        module.exports = {
+          // …
+          entry: {
+            a: './src/a.js',
+            b: './src/b.js',
+          },
+          output: {
+            filename: '[name].js',
+            library: ['MyLibrary', '[name]'], // name is a placeholder here
+          },
+        };
+        ```
 
-- Type: `string | string[] | object`
-
-Let's take a look at an example.
-
-**webpack.config.js**
-
-```js
-module.exports = {
-  // …
-  entry: './src/index.js',
-  output: {
-    library: 'MyLibrary',
-  },
-};
-```
-
-Say you have exported a function in your `src/index.js` entry:
-
-```js
-export function hello(name) {
-  console.log(`hello ${name}`);
-}
-```
-
-Now the variable `MyLibrary` will be bound with the exports of your entry file, and here's how to consume the webpack bundled library:
-
-```html
-<script src="https://example.org/path/to/my-library.js"></script>
-<script>
-  MyLibrary.hello('webpack');
-</script>
-```
-
-In the above example, we're passing a single entry file to `entry`, however, webpack can accept [many kinds of entry point](/configuration/entry-context/#entry), e.g., an `array`, or an `object`.
-
-1. If you provide an `array` as the `entry` point, only the last one in the array will be exposed.
-
-   ```js
-   module.exports = {
-     // …
-     entry: ['./src/a.js', './src/b.js'], // only exports in b.js will be exposed
-     output: {
-       library: 'MyLibrary',
-     },
-   };
-   ```
-
-2. If an `object` is provided as the `entry` point, all entries can be exposed using the `array` syntax of `library`:
-
-   ```js
-   module.exports = {
-     // …
-     entry: {
-       a: './src/a.js',
-       b: './src/b.js',
-     },
-     output: {
-       filename: '[name].js',
-       library: ['MyLibrary', '[name]'], // name is a placeholder here
-     },
-   };
-   ```
-
-   Assuming that both `a.js` and `b.js` export a function `hello`, here's how to consume the libraries:
-
-   ```html
-   <script src="https://example.org/path/to/a.js"></script>
-   <script src="https://example.org/path/to/b.js"></script>
-   <script>
-     MyLibrary.a.hello('webpack');
-     MyLibrary.b.hello('webpack');
-   </script>
-   ```
-
-   See [this example](https://github.com/webpack/webpack/tree/main/examples/multi-part-library) for more.
-
-   Note that the above configuration won't work as expected if you're going to configure library options per entry point. Here is how to do it [under each of your entries](/concepts/entry-points/#entrydescription-object):
-
-   ```js
-   module.exports = {
-     // …
-     entry: {
-       main: {
-         import: './src/index.js',
-         library: {
-           // all options under `output.library` can be used here
-           name: 'MyLibrary',
-           type: 'umd',
-           umdNamedDefine: true,
-         },
-       },
-       another: {
-         import: './src/another.js',
-         library: {
-           name: 'AnotherLibrary',
-           type: 'commonjs2',
-         },
-       },
-     },
-   };
-   ```
+        ```html
+        <script src="https://example.org/path/to/a.js"></script>
+        <script src="https://example.org/path/to/b.js"></script>
+        <script>
+          // assuming that both `a.js` and `b.js` -- export a -- function `hello`
+          MyLibrary.a.hello('webpack');
+          MyLibrary.b.hello('webpack');
+        </script>
+        ```
+    * if you're going to configure [library options / entry point](../concepts/entry-points.md#entrydescription-object) -> define SEVERAL entries
+      * _Example:_
+        ```js
+        module.exports = {
+          // …
+          entry: {
+            main: {
+              import: './src/index.js',
+              library: {
+                // all options under `output.library` can be used here
+                name: 'MyLibrary',
+                type: 'umd',
+                umdNamedDefine: true,
+              },
+            },
+            another: {
+              import: './src/another.js',
+              library: {
+                name: 'AnotherLibrary',
+                type: 'commonjs2',
+              },
+            },
+          },
+        };
+        ```
+* ALLOWED values
+  * `string | string[] | object`
+    * _Example:_
+      ```js,title=webpack.config.js
+      module.exports = {
+        // …
+        entry: './src/index.js',
+        output: {
+          library: 'MyLibrary',     // variableName
+        },
+      };
+      ```
+      ```js,title=src/index.js
+      export function hello(name) {
+        console.log(`hello ${name}`);
+      }
+      ```
+      ```html
+      <script src="https://example.org/path/to/my-library.js"></script>
+      <script>
+      MyLibrary.hello('webpack');
+      </script>
+      ```
 
 ### output.library.amdContainer
 
-<Badge text="5.78.0+" />
+* TODO:
 
 Use a container(defined in global space) for calling `define`/`require` functions in an AMD module.
 
