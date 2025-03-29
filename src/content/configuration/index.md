@@ -38,7 +38,7 @@ contributors:
   * must be placed | root folder
   * automatically use it -- by -- webpack
 
-## Use a different configuration file
+## How to use a DIFFERENT configuration file?
 
 * `--config`
   * flag to use different configuration file / situations
@@ -51,12 +51,12 @@ contributors:
   }
   ```
 
-## Set up a new webpack project
+## How to set up a NEW webpack project?
 
-* once [plugins defaults](/contribute/writing-a-plugin/#configuration-defaults) are applied -> webpack -- applies -- configuration defaults
+* once [plugins defaults](../contribute/writing-a-plugin.md#configuration-defaults) are applied -> webpack -- applies -- configuration defaults
 * [webpack-cli's `init` command](/api/cli/#init)
-  * generate webpack configuration files | your project requirements / ask you a couple of questions -- before creating a -- configuration file
-  * prompt you to install `@webpack-cli/generators`
+  * -- generate -- webpack configuration files | your project requirements / ask you a couple of questions
+  * 👀prompt you to install `@webpack-cli/generators` 👀
 
   ```bash
   npx webpack init
