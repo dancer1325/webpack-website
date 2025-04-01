@@ -1,11 +1,10 @@
 # Getting Started
 
-## How to use
+## How to run?
 
-Run the following commands in the root directory.
-
-```bash
-npm install
-npm run build
-npm run start
-```
+* | this folder's root directory
+  ```bash
+  npm install
+  npm run build
+  npm run start
+  ```
