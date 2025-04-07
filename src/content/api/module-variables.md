@@ -21,10 +21,15 @@ related:
     url: https://en.wikipedia.org/wiki/Asynchronous_module_definition
 ---
 
-This section covers all **variables** available in code compiled with webpack. Modules will have access to certain data from the compilation process through `module` and other variables.
+* goal
+  * ALL variables / 👀AVAILABLE in code compiled -- with -- webpack👀
+
+* modules
+  * | compilation process,
+    * have access -- , via `module` & OTHER variables, to -- certain data
 
 ## module.loaded (NodeJS)
-
+* TODO:
 This is `false` if the module is currently executing, and `true` if the sync execution has finished.
 
 ## module.hot (webpack-specific)
