@@ -1,6 +1,5 @@
 * goal
-  * Guides,
-  * documentation
+  * [documentation](src/content)
 
 # Content Progress
 
